@@ -85,7 +85,7 @@
 
 .vet-image {
   width: 100%;
-  max-width: 500px; /* tamanho mais adequado */
+  max-width: 750px; /* tamanho mais adequado */
   height: auto;
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
   transition: transform 0.3s ease;
