@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import logo from '../../img/logologin.png';
-import { FiLogOut } from 'react-icons/fi'; // Apenas o ícone de Logout foi mantido
-import './index.css'; // Estilos para o componente
+import { FiLogOut } from 'react-icons/fi';
+import './index.css';
 
 export default function Cadastro() {
   const [idBusca, setIdBusca] = useState('');
   const [usuarioUnico, setUsuarioUnico] = useState(null);
   const [clientes, setClientes] = useState([]);
+
   const [novoCliente, setNovoCliente] = useState({
-    nome: '',
-    cpf: '',
-    celular: '',
-    data_nascimento: '',
-    endereco: '',
-    cidade: '',
-    estado: '',
-    cep: ''
+    a_login: '',
+    b_senha: '',
+    c_nome: '',
+    d_cpf: '',
+    e_celular: '',
+    f_data_nascimento: '',
+    g_endereco: '',
+    h_cidade: '',
+    i_estado: '',
+    j_cep: ''
   });
 
-  const baseUrl = 'http://localhost:5001/usuarios'; // URL da API
+  const baseUrl = 'http://localhost:2025/usuarios';
 
   const today = new Date().toLocaleDateString('pt-BR');
 
-  // Função para buscar todos os usuários
   const listarUsuarios = async () => {
     try {
       const res = await axios.get(baseUrl);
@@ -33,7 +35,6 @@ export default function Cadastro() {
     }
   };
 
-  // Função para buscar usuário por ID
   const buscarPorId = async () => {
     if (!idBusca) return;
     try {
@@ -44,24 +45,24 @@ export default function Cadastro() {
     }
   };
 
-  // Função para criar um novo cliente
   const criarCliente = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do formulário (recarregar a página)
+    e.preventDefault();
     try {
-      const res = await axios.post(baseUrl, novoCliente);
+      await axios.post(baseUrl, novoCliente);
       alert('Cliente criado com sucesso!');
-      // Limpa os campos após o sucesso
       setNovoCliente({
-        nome: '',
-        cpf: '',
-        celular: '',
-        data_nascimento: '',
-        endereco: '',
-        cidade: '',
-        estado: '',
-        cep: ''
+        a_login: '',
+        b_senha: '',
+        c_nome: '',
+        d_cpf: '',
+        e_celular: '',
+        f_data_nascimento: '',
+        g_endereco: '',
+        h_cidade: '',
+        i_estado: '',
+        j_cep: ''
       });
-      listarUsuarios(); // Atualiza a lista de clientes após a criação
+      listarUsuarios();
     } catch (error) {
       console.error("Erro ao criar cliente:", error);
       alert('Erro ao criar cliente. Tente novamente.');
@@ -87,7 +88,6 @@ export default function Cadastro() {
       <main className="main-content">
         <div className="date-display">{today}</div>
 
-        {/* Formulário para cadastro de novo cliente */}
         <div className="form-container">
           <div className="form-header">
             <h2>Novo cliente</h2>
@@ -95,12 +95,34 @@ export default function Cadastro() {
           </div>
           <form className="client-form" onSubmit={criarCliente}>
             <label>
+              Login
+              <input 
+                type="text" 
+                placeholder="Login" 
+                value={novoCliente.a_login}
+                onChange={(e) => setNovoCliente({ ...novoCliente, a_login: e.target.value })}
+                required
+              />
+            </label>
+
+            <label>
+              Senha
+              <input 
+                type="password" 
+                placeholder="Senha" 
+                value={novoCliente.b_senha}
+                onChange={(e) => setNovoCliente({ ...novoCliente, b_senha: e.target.value })}
+                required
+              />
+            </label>
+
+            <label>
               Nome
               <input 
                 type="text" 
                 placeholder="Nome" 
-                value={novoCliente.nome}
-                onChange={(e) => setNovoCliente({ ...novoCliente, nome: e.target.value })}
+                value={novoCliente.c_nome}
+                onChange={(e) => setNovoCliente({ ...novoCliente, c_nome: e.target.value })}
                 required
               />
             </label>
@@ -110,8 +132,8 @@ export default function Cadastro() {
               <input 
                 type="text" 
                 placeholder="CPF" 
-                value={novoCliente.cpf}
-                onChange={(e) => setNovoCliente({ ...novoCliente, cpf: e.target.value })}
+                value={novoCliente.d_cpf}
+                onChange={(e) => setNovoCliente({ ...novoCliente, d_cpf: e.target.value })}
                 required
               />
             </label>
@@ -122,8 +144,8 @@ export default function Cadastro() {
                 <input 
                   type="text" 
                   placeholder="Celular" 
-                  value={novoCliente.celular}
-                  onChange={(e) => setNovoCliente({ ...novoCliente, celular: e.target.value })}
+                  value={novoCliente.e_celular}
+                  onChange={(e) => setNovoCliente({ ...novoCliente, e_celular: e.target.value })}
                   required
                 />
               </label>
@@ -131,8 +153,8 @@ export default function Cadastro() {
                 Data de nasc.
                 <input 
                   type="date" 
-                  value={novoCliente.data_nascimento}
-                  onChange={(e) => setNovoCliente({ ...novoCliente, data_nascimento: e.target.value })}
+                  value={novoCliente.f_data_nascimento}
+                  onChange={(e) => setNovoCliente({ ...novoCliente, f_data_nascimento: e.target.value })}
                   required
                 />
               </label>
@@ -143,8 +165,8 @@ export default function Cadastro() {
               <input 
                 type="text" 
                 placeholder="Endereço" 
-                value={novoCliente.endereco}
-                onChange={(e) => setNovoCliente({ ...novoCliente, endereco: e.target.value })}
+                value={novoCliente.g_endereco}
+                onChange={(e) => setNovoCliente({ ...novoCliente, g_endereco: e.target.value })}
                 required
               />
             </label>
@@ -155,8 +177,8 @@ export default function Cadastro() {
                 <input 
                   type="text" 
                   placeholder="Cidade" 
-                  value={novoCliente.cidade}
-                  onChange={(e) => setNovoCliente({ ...novoCliente, cidade: e.target.value })}
+                  value={novoCliente.h_cidade}
+                  onChange={(e) => setNovoCliente({ ...novoCliente, h_cidade: e.target.value })}
                   required
                 />
               </label>
@@ -164,9 +186,9 @@ export default function Cadastro() {
                 Estado
                 <input 
                   type="text" 
-                  placeholder="Estado" 
-                  value={novoCliente.estado}
-                  onChange={(e) => setNovoCliente({ ...novoCliente, estado: e.target.value })}
+                  placeholder="Estado (ex: SP)" 
+                  value={novoCliente.i_estado}
+                  onChange={(e) => setNovoCliente({ ...novoCliente, i_estado: e.target.value })}
                   required
                 />
               </label>
@@ -177,8 +199,8 @@ export default function Cadastro() {
               <input 
                 type="text" 
                 placeholder="CEP" 
-                value={novoCliente.cep}
-                onChange={(e) => setNovoCliente({ ...novoCliente, cep: e.target.value })}
+                value={novoCliente.j_cep}
+                onChange={(e) => setNovoCliente({ ...novoCliente, j_cep: e.target.value })}
                 required
               />
             </label>
@@ -187,7 +209,6 @@ export default function Cadastro() {
           </form>
         </div>
 
-        {/* Buscar Usuários */}
         <div className="search-container">
           <h2>Buscar por ID</h2>
           <input 
@@ -203,7 +224,6 @@ export default function Cadastro() {
           )}
         </div>
 
-        {/* Listagem de usuários */}
         <div className="user-list">
           <h2>Listar Usuários</h2>
           <button onClick={listarUsuarios}>Listar Todos</button>

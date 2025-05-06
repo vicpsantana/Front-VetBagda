@@ -2,6 +2,7 @@
 import React from 'react';
 import logo from '../../img/logologin.png';
 import { FiLogOut } from 'react-icons/fi';
+import './lateralProject.css';
 
 export default function LateralProject() {
   return (
@@ -20,3 +21,4 @@ export default function LateralProject() {
     </aside>
   );
 }
+ 
