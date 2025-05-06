@@ -7,8 +7,10 @@ import Dashboard from '../dashboard';
 import Clientes from '../clientes';
 import Cadastro from '../cadastro';
 import Animais from '../animais/animais';
-import NovoAnimal from '../novoAnimal/novoAnima';
+import NovoAnimal from '../novoAnimal/novoAnimal';
 import Footer from '../footer/footer';
+import ServicoAnimal from '../servicoAnimal/servicoAnimal';
+import NovoAtendimento from '../novoAtendimento/novoAtendimento';
 
 //import LateralProject from '../../components/lateralProject';
 
@@ -68,6 +70,14 @@ export default function App() {
 
 <section id="novo-animal" className="section">
   <NovoAnimal />
+</section>
+
+<section id="servico-animal" className="section">
+  <ServicoAnimal />
+</section>
+
+<section id="novo-atendimento" className="section">
+  <NovoAtendimento />
 </section>
 
 <section id="footer" className="section">

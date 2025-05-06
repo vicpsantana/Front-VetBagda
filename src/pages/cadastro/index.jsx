@@ -4,6 +4,8 @@ import logo from '../../img/logologin.png';
 import { FiLogOut } from 'react-icons/fi';
 import './index.css';
 
+const BASE_URL = 'http://localhost:2025/cadastro';
+
 export default function Cadastro() {
   const [idBusca, setIdBusca] = useState('');
   const [usuarioUnico, setUsuarioUnico] = useState(null);
@@ -22,33 +24,74 @@ export default function Cadastro() {
     j_cep: ''
   });
 
-  const baseUrl = 'http://localhost:2025/usuarios';
-
   const today = new Date().toLocaleDateString('pt-BR');
 
   const listarUsuarios = async () => {
     try {
-      const res = await axios.get(baseUrl);
+      const res = await axios.get(BASE_URL);
       setClientes(res.data);
     } catch (error) {
       console.error("Erro ao listar usuários:", error);
+      alert('Erro ao listar usuários');
     }
   };
 
   const buscarPorId = async () => {
     if (!idBusca) return;
+
     try {
-      const res = await axios.get(`${baseUrl}/${idBusca}`);
-      setUsuarioUnico(res.data);
+      const res = await axios.get(`${BASE_URL}/${idBusca}`);
+
+      if (res.data && Object.keys(res.data).length > 0) {
+        setUsuarioUnico(res.data);
+      } else {
+        alert('Usuário não encontrado');
+        setUsuarioUnico(null);
+      }
     } catch (error) {
       console.error("Erro ao buscar usuário:", error);
+      alert('Erro ao buscar usuário');
+      setUsuarioUnico(null);
     }
+  };
+
+  const validarCampos = () => {
+    const cpfRegex = /^\d{11}$/;
+    const celularRegex = /^\d{10,11}$/;
+
+    if (!cpfRegex.test(novoCliente.d_cpf)) {
+      alert('CPF inválido. Use apenas números (11 dígitos).');
+      return false;
+    }
+
+    if (!celularRegex.test(novoCliente.e_celular)) {
+      alert('Celular inválido. Use apenas números com DDD.');
+      return false;
+    }
+
+    return true;
   };
 
   const criarCliente = async (e) => {
     e.preventDefault();
+    if (!validarCampos()) return;
+
+    // Mapeando os campos para o formato que o backend espera
+    const payload = {
+      login: novoCliente.a_login,
+      senha: novoCliente.b_senha,
+      nome: novoCliente.c_nome,
+      cpf: novoCliente.d_cpf,
+      celular: novoCliente.e_celular,
+      data_nascimento: novoCliente.f_data_nascimento,
+      endereco: novoCliente.g_endereco,
+      cidade: novoCliente.h_cidade,
+      estado: novoCliente.i_estado,
+      cep: novoCliente.j_cep
+    };
+
     try {
-      await axios.post(baseUrl, novoCliente);
+      await axios.post(BASE_URL, payload);
       alert('Cliente criado com sucesso!');
       setNovoCliente({
         a_login: '',
@@ -91,8 +134,8 @@ export default function Cadastro() {
         <div className="form-container">
           <div className="form-header">
             <h2>Novo cliente</h2>
-            <button className="close-button">×</button>
           </div>
+
           <form className="client-form" onSubmit={criarCliente}>
             <label>
               Login
@@ -149,6 +192,7 @@ export default function Cadastro() {
                   required
                 />
               </label>
+
               <label>
                 Data de nasc.
                 <input 
@@ -182,6 +226,7 @@ export default function Cadastro() {
                   required
                 />
               </label>
+
               <label>
                 Estado
                 <input 
@@ -219,17 +264,23 @@ export default function Cadastro() {
           />
           <button onClick={buscarPorId}>Buscar</button>
 
-          {usuarioUnico && (
+          {usuarioUnico ? (
             <pre>{JSON.stringify(usuarioUnico, null, 2)}</pre>
+          ) : (
+            <p>Nenhum usuário encontrado.</p>
           )}
         </div>
 
         <div className="user-list">
           <h2>Listar Usuários</h2>
           <button onClick={listarUsuarios}>Listar Todos</button>
-          <pre>{JSON.stringify(clientes, null, 2)}</pre>
+          {clientes.length > 0 ? (
+            <pre>{JSON.stringify(clientes, null, 2)}</pre>
+          ) : (
+            <p>Nenhum usuário listado.</p>
+          )}
         </div>
       </main>
-    </div>
-  );
+    </div>
+  );
 }

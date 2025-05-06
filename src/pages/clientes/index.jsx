@@ -55,6 +55,6 @@ export default function Clientes() {
 
         <button className="novo-btn"><FiPlus /> Novo</button>
       </main>
-    </div>
-  );
+    </div>
+  );
 }
